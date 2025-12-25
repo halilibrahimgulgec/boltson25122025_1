@@ -1163,7 +1163,14 @@ def kargo_arac_filtre():
 @app.route('/binek-arac-filtre')
 def binek_arac_filtre():
     """Binek araç filtre sayfası"""
-    return render_template('binek_arac_filtre.html')
+    try:
+        from database import get_aktif_binek_araclar
+        binek_plakalar = get_aktif_binek_araclar(dahil_taseron=False)
+        logger.info(f"📊 Binek araç sayısı: {len(binek_plakalar)}")
+        return render_template('binek_arac_filtre.html', plakalar=binek_plakalar)
+    except Exception as e:
+        logger.error(f"❌ Binek filtre hatası: {e}")
+        return render_template('binek_arac_filtre.html', plakalar=[])
 
 @app.route('/is-makinesi-filtre')
 def is_makinesi_filtre():
