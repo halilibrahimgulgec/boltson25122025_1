@@ -19,7 +19,8 @@ RUN pip install --no-cache-dir --upgrade pip && \
 COPY . .
 
 # Expose port
-EXPOSE 8080
+EXPOSE $PORT
 
-# Start command
-CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:8080", "--workers", "2", "--threads", "4", "--timeout", "120", "--access-logfile", "-", "--error-logfile", "-"]
+# Start command - use shell form to allow environment variable substitution
+CMD gunicorn app:app --bind 0.0.0.0:$PORT --workers 2 --threads 4 --timeout 120 --access-logfile - --error-logfile -
+
