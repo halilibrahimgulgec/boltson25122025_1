@@ -289,8 +289,8 @@ def get_aktif_kargo_araclari() -> List[str]:
     try:
         data = fetch_all_paginated('araclar',
                                    select='plaka',
-                                   filters={'arac_tipi': 'eq.KARGO ARACI', 'aktif': 'eq.1', 'sahip': 'eq.BİZİM'})
-        plakalar = [row['plaka'] for row in data]
+                                   filters={'arac_tipi': 'eq.KARGO ARACI', 'aktif': 'eq.true', 'sahip': 'eq.BİZİM'})
+        plakalar = sorted([row['plaka'] for row in data])
 
         # Eğer araclar tablosu boşsa, yakit tablosundaki tüm plakaları kullan
         if not plakalar:
@@ -306,12 +306,12 @@ def get_aktif_kargo_araclari() -> List[str]:
 def get_aktif_binek_araclar(dahil_taseron: bool = False) -> List[str]:
     """Aktif binek araçları getir"""
     try:
-        filters = {'arac_tipi': 'eq.BİNEK ARAÇ', 'aktif': 'eq.1'}
+        filters = {'arac_tipi': 'eq.BİNEK ARAÇ', 'aktif': 'eq.true'}
         if not dahil_taseron:
             filters['sahip'] = 'eq.BİZİM'
 
         data = fetch_all_paginated('araclar', select='plaka', filters=filters)
-        plakalar = [row['plaka'] for row in data]
+        plakalar = sorted([row['plaka'] for row in data])
 
         # Eğer araclar tablosu boşsa, yakit tablosundaki tüm plakaları kullan
         if not plakalar:
@@ -327,12 +327,12 @@ def get_aktif_binek_araclar(dahil_taseron: bool = False) -> List[str]:
 def get_aktif_is_makineleri(dahil_taseron: bool = False) -> List[str]:
     """Aktif iş makinelerini getir"""
     try:
-        filters = {'arac_tipi': 'eq.İŞ MAKİNESİ', 'aktif': 'eq.1'}
+        filters = {'arac_tipi': 'eq.İŞ MAKİNESİ', 'aktif': 'eq.true'}
         if not dahil_taseron:
             filters['sahip'] = 'eq.BİZİM'
 
         data = fetch_all_paginated('araclar', select='plaka', filters=filters)
-        plakalar = [row['plaka'] for row in data]
+        plakalar = sorted([row['plaka'] for row in data])
 
         # Eğer araclar tablosu boşsa, yakit tablosundaki tüm plakaları kullan
         if not plakalar:
