@@ -1182,7 +1182,14 @@ def binek_arac_filtre():
 @app.route('/is-makinesi-filtre')
 def is_makinesi_filtre():
     """İş makinesi filtre sayfası"""
-    return render_template('is_makinesi_filtre.html')
+    try:
+        from database import get_aktif_is_makineleri
+        is_makinesi_plakalar = get_aktif_is_makineleri(dahil_taseron=False)
+        logger.info(f"📊 İş makinesi sayısı: {len(is_makinesi_plakalar)}")
+        return render_template('is_makinesi_filtre.html', plakalar=is_makinesi_plakalar)
+    except Exception as e:
+        logger.error(f"❌ İş makinesi filtre hatası: {e}")
+        return render_template('is_makinesi_filtre.html', plakalar=[])
 
 @app.route('/ai-assistant')
 def ai_assistant():
