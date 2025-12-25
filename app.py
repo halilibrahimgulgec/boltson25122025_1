@@ -1158,7 +1158,14 @@ def export_pdf():
 @app.route('/kargo-arac-filtre')
 def kargo_arac_filtre():
     """Kargo araç filtre sayfası"""
-    return render_template('kargo_arac_filtre.html')
+    try:
+        from database import get_aktif_kargo_araclari
+        kargo_plakalar = get_aktif_kargo_araclari()
+        logger.info(f"📊 Kargo araç sayısı: {len(kargo_plakalar)}")
+        return render_template('kargo_arac_filtre.html', plakalar=kargo_plakalar)
+    except Exception as e:
+        logger.error(f"❌ Kargo filtre hatası: {e}")
+        return render_template('kargo_arac_filtre.html', plakalar=[])
 
 @app.route('/binek-arac-filtre')
 def binek_arac_filtre():
